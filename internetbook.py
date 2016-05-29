@@ -6,16 +6,16 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 ##global
 conn = None
 #regKey = '73ee2bc65b*******8b927fc6cd79a97'
-regKey = 'c65f7d130ef99a3dd1826fde11f9b0b3'
+regKey = '5UvOUihd8O4ks1eX7iXEtL1wrH%2F6cIlvejoo4K%2Be6isCb4dEcKoXHAGpr0m8u44BvxMpKnC8p1l5RdA9wBIFXQ%3D%3D'
 # 네이버 OpenAPI 접속 정보 information
-server = "apis.daum.net"
+server = "www.culture.go.kr"
 
 # smtp 정보
 host = "smtp.gmail.com" # Gmail SMTP 서버 주소.
 port = "587"
 
 def userURIBuilder(server,**user):
-    str = "https://" + server + "/search/book" + "?" 
+    str = "http://" + server + "/openapi/rest/publicperformancedisplays/d/" + "?"
     for key in user.keys():
         str += key + "=" + user[key] + "&"
     return str
@@ -28,14 +28,14 @@ def getBookDataFromISBN(isbn):
     global server, regKey, conn
     if conn == None :
         connectOpenAPIServer()
-    uri = userURIBuilder(server, apikey=regKey, q=isbn, output="xml")
+    uri = userURIBuilder(server, serviceKey=regKey, seq=isbn)
     conn.request("GET", uri)
     
     req = conn.getresponse()
     print (req.status)
     if int(req.status) == 200 :
         print("Book data downloading complete!")
-        return extractBookData(req.read())
+        return extractBookData(req.read().decode("UTF-8"))
     else:
         print ("OpenAPI request has been failed!! please retry")
         return None

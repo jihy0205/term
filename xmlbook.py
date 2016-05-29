@@ -41,7 +41,7 @@ def PrintBookList(tags):
     booklist = BooksDoc.childNodes
     book = booklist[0].childNodes
     for item in book:
-        if item.nodeName == "book":
+        if item.nodeName == "perforList":
             subitems = item.childNodes
             for atom in subitems:
                if atom.nodeName in tags:
@@ -152,4 +152,3 @@ def checkDocument():
         print("Error : Document is empty")
         return False
     return True
-  
