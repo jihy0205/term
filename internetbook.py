@@ -20,6 +20,24 @@ def userURIBuilder(server,**user):
         str += key + "=" + user[key] + "&"
     return str
 
+def periodURIBuilder(server,**user):
+    str = "http://" + server + "/openapi/rest/publicperformancedisplays/period" + "?"
+    for key in user.keys():
+        str += key + "=" + user[key] + "&"
+    return str
+    
+def areaURIBuilder(server,**user):
+    str = "http://" + server + "/openapi/rest/publicperformancedisplays/area" + "?"
+    for key in user.keys():
+        str += key + "=" + user[key] + "&"
+    return str    
+
+def realmURIBuilder(server,**user):
+    str = "http://" + server + "/openapi/rest/publicperformancedisplays/realm" + "?"
+    for key in user.keys():
+        str += key + "=" + user[key] + "&"
+    return str    
+    
 def connectOpenAPIServer():
     global conn, server
     conn = HTTPConnection(server)
@@ -34,7 +52,52 @@ def getBookDataFromISBN(isbn):
     req = conn.getresponse()
     print (req.status)
     if int(req.status) == 200 :
-        print("Book data downloading complete!")
+        return extractBookData(req.read().decode("UTF-8"))
+    else:
+        print ("OpenAPI request has been failed!! please retry")
+        return None
+        
+def getAreaData(s, g):
+    global server, regKey, conn
+    if conn == None :
+        connectOpenAPIServer()
+    uri = areaURIBuilder(server, serviceKey=regKey, sido=s, gugun=g)
+    conn.request("GET", uri)
+    
+    req = conn.getresponse()
+    print (req.status)
+    if int(req.status) == 200 :
+        return extractBookData(req.read().decode("UTF-8"))
+    else:
+        print ("OpenAPI request has been failed!! please retry")
+        return None
+        
+def getRealmData(realm):
+    global server, regKey, conn
+    if conn == None :
+        connectOpenAPIServer()
+    uri = realmURIBuilder(server, serviceKey=regKey, realmCode=realm)
+    conn.request("GET", uri)
+    
+    req = conn.getresponse()
+    print (req.status)
+    if int(req.status) == 200 :
+        return extractBookData(req.read().decode("UTF-8"))
+    else:
+        print ("OpenAPI request has been failed!! please retry")
+        return None
+
+def getPeriodData(start, end):
+    global server, regKey, conn
+    if conn == None :
+        connectOpenAPIServer()
+    uri = "http://" + server + "/openapi/rest/publicperformancedisplays/period" + "?" + "serviceKey=" + regKey + "&from=" + start + "&to=" + end + "&sortStdr=1"
+    #uri = periodURIBuilder(server, serviceKey=regKey, 'from'=start, to=end, sortStdr=1)
+    conn.request("GET", uri)
+    
+    req = conn.getresponse()
+    print (req.status)
+    if int(req.status) == 200 :
         return extractBookData(req.read().decode("UTF-8"))
     else:
         print ("OpenAPI request has been failed!! please retry")
