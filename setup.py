@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-setup(name='test',
+setup(name='package',
       version='1.0',
-      py_modules=['launcher', 'gamil', 'internetbook']
+      py_modules=['launcher', 'gmail', 'internetbook', 'scriptUI']
       )
