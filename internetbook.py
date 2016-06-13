@@ -2,6 +2,7 @@
 from xmlbook import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import urllib
 
 ##global
 conn = None
@@ -28,6 +29,7 @@ def periodURIBuilder(server,**user):
     
 def areaURIBuilder(server,**user):
     str = "http://" + server + "/openapi/rest/publicperformancedisplays/area" + "?"
+
     for key in user.keys():
         str += key + "=" + user[key] + "&"
     return str    
@@ -52,16 +54,18 @@ def getBookDataFromISBN(isbn):
     req = conn.getresponse()
     print (req.status)
     if int(req.status) == 200 :
-        return extractBookData(req.read().decode("UTF-8"))
+        return extractSeqData(req.read().decode("UTF-8"))
     else:
         print ("OpenAPI request has been failed!! please retry")
         return None
         
-def getAreaData(s, g):
+def getAreaData(s):
     global server, regKey, conn
     if conn == None :
         connectOpenAPIServer()
-    uri = areaURIBuilder(server, serviceKey=regKey, sido=s, gugun=g)
+        
+    hangul_utf8 = urllib.parse.quote(s)
+    uri = areaURIBuilder(server, serviceKey=regKey, sido=hangul_utf8)
     conn.request("GET", uri)
     
     req = conn.getresponse()
@@ -102,20 +106,32 @@ def getPeriodData(start, end):
     else:
         print ("OpenAPI request has been failed!! please retry")
         return None
+        
+def extractSeqData(strXml):
+    from xml.etree import ElementTree
+    tree = ElementTree.fromstring(strXml)
+    #print (strXml)
+    # Book 엘리먼트를 가져옵니다.
+    itemElements = tree.getiterator("perforInfo")  # return list type
+    #print(itemElements)
+    for item in itemElements:
+        isbn = item.find("seq")
+        strTitle = item.find("title")
+        print (strTitle.text, " ", isbn.text)
 
 def extractBookData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
-    print (strXml)
+    #print (strXml)
     # Book 엘리먼트를 가져옵니다.
-    itemElements = tree.getiterator("item")  # return list type
-    print(itemElements)
+    itemElements = tree.getiterator("perforList")  # return list type
+    #print(itemElements)
     for item in itemElements:
-        isbn = item.find("isbn")
+        isbn = item.find("seq")
         strTitle = item.find("title")
-        print (strTitle)
-        if len(strTitle.text) > 0 :
-           return {"ISBN":isbn.text,"title":strTitle.text}
+        print (strTitle.text, " ", isbn.text)
+            #if len(strTitle.text) > 0 :
+                #return {"ISBN":isbn.text,"title":strTitle.text}
 
 def sendMain():
     global host, port

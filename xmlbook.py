@@ -53,8 +53,8 @@ def AddBook(bookdata):
         return None
      
      # book 엘리먼트 생성
-     newBook = BooksDoc.createElement('book')
-     newBook.setAttribute('ISBN',bookdata['ISBN'])
+     newBook = BooksDoc.createElement('perforList')
+     newBook.setAttribute('seq',bookdata['seq'])
      # Title 엘리먼트 생성
      titleEle = BooksDoc.createElement('title')
      # 텍스트 노드 생성

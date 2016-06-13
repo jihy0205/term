@@ -23,18 +23,14 @@ def launcherFunction(menu):
         QuitBookMgr()
     elif menu == 'b':
         PrintBookList(["title",])
-    elif menu == 'a':
-        ISBN = str(input ('insert ISBN :'))
-        title = str(input ('insert Title :'))
         AddBook({'ISBN':ISBN, 'title':title})
     elif menu == 'e':
         keyword = str(input ('input keyword to search :'))
         printBookList(SearchBookTitle(keyword))
         
     elif menu == 'a':
-        sido = str(input('지역 이름(시/도)을 입력하세요: '))
-        gungu = str(input('(군/구)를 입력하세요: '))
-        getAreaData(sido, gungu)
+        sido = (input('지역 이름(시/도)을 입력하세요: '))
+        getAreaData(sido)
         
     elif menu == 'p':
         start = str(input('시작 일자를 입력하세요: '))
@@ -46,7 +42,7 @@ def launcherFunction(menu):
         
     
     elif menu == 'g': 
-        isbn = str(input ('input isbn to get :'))
+        isbn = str(input ('공연/전시 정보의 고유번호를 입력하세요:'))
         #isbn = '0596513984'
         ret = getBookDataFromISBN(isbn)
         AddBook(ret)
