@@ -33,11 +33,11 @@ def launcherFunction(menu):
         getAreaData(sido)
         
     elif menu == 'p':
-        start = str(input('시작 일자를 입력하세요: '))
-        end = str(input('끝나는 일자를 입력하세요: '))
+        start = str(input('시작 일자를 입력하세요(20xxmmdd): '))
+        end = str(input('끝나는 일자를 입력하세요(20xxmmdd): '))
         getPeriodData(start, end)
     elif menu == 'r':
-        code = str(input('분류코드를 입력하세요: '))
+        code = str(input('분류코드를 입력하세요: \n- 연극/뮤지컬-A000, 국악-B000, 무용-C000, 전시/박물관-D000\n'))
         getRealmData(code)
         
     

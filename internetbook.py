@@ -117,7 +117,25 @@ def extractSeqData(strXml):
     for item in itemElements:
         isbn = item.find("seq")
         strTitle = item.find("title")
-        print (strTitle.text, " ", isbn.text)
+        startDate = item.find("startDate")
+        endDate = item.find("endDate")
+        place = item.find("place")
+        realmName = item.find("realmName")
+        area = item.find("area")
+        price = item.find("price")
+        contents1 = item.find("contents1")
+        contents2 = item.find("contents2")
+        URL = item.find("url")
+        imgUrl = item.find("imgUrl")
+        #-------------------#
+        print ("제목: ", strTitle.text, "\n\n")
+        print ("시작일: ", startDate.text, "\n")
+        print ("마감일: ", endDate.text, "\n")        
+        print ("장소: ", place.text, "\n")
+        print ("분류명: ", realmName.text, "\n")
+        print ("가격: ", price.text, "\n")
+        print ("주소: ", URL.text, "\n")
+        print ("내용: ", contents1.text, "\n")
 
 def extractBookData(strXml):
     from xml.etree import ElementTree
@@ -129,7 +147,13 @@ def extractBookData(strXml):
     for item in itemElements:
         isbn = item.find("seq")
         strTitle = item.find("title")
-        print (strTitle.text, " ", isbn.text)
+        fromDate = item.find("startDate")
+        toDate = item.find("endDate")
+        place = item.find("place")
+        print ("제목: ", strTitle.text, "\n")
+        print("고유번호: ", isbn.text, "\n")        
+        print ("기간: ", fromDate.text, " ~ ", toDate.text, "\n")
+        print("장소: ", place.text, "\n\n")
             #if len(strTitle.text) > 0 :
                 #return {"ISBN":isbn.text,"title":strTitle.text}
 
